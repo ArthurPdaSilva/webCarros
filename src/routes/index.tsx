@@ -3,33 +3,43 @@ import TemplateImports from "./TemplateImports";
 
 const router = createBrowserRouter([
   {
-    element: <TemplateImports.Template />,
+    element: <TemplateImports.PrivateRoute />,
     children: [
       {
-        path: "/",
-        element: <TemplateImports.Home />,
-      },
-      {
-        path: "/car/:id",
-        element: <TemplateImports.CarDetail />,
-      },
-      {
-        path: "/dashboard",
-        element: <TemplateImports.Dashboard.Index />,
-      },
-      {
-        path: "/dashboard/new",
-        element: <TemplateImports.Dashboard.New />,
+        element: <TemplateImports.Template />,
+        children: [
+          {
+            path: "/",
+            element: <TemplateImports.Home />,
+          },
+          {
+            path: "/car/:id",
+            element: <TemplateImports.CarDetail />,
+          },
+          {
+            path: "/dashboard",
+            element: <TemplateImports.Dashboard.Index />,
+          },
+          {
+            path: "/dashboard/new",
+            element: <TemplateImports.Dashboard.New />,
+          },
+        ],
       },
     ],
   },
   {
-    path: "/login",
-    element: <TemplateImports.Login />,
-  },
-  {
-    path: "/register",
-    element: <TemplateImports.Register />,
+    element: <TemplateImports.PublicRoute />,
+    children: [
+      {
+        path: "/login",
+        element: <TemplateImports.Login />,
+      },
+      {
+        path: "/register",
+        element: <TemplateImports.Register />,
+      },
+    ],
   },
 ]);
 

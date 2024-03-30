@@ -1,12 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logoImg from "../../assets/logo.svg";
 import Container from "../../components/Container";
 import Input from "../../components/Input";
+import { auth } from "../../services/firebaseConnection";
 import { FormData, schema } from "./schema";
 
 function Register() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -15,8 +18,19 @@ function Register() {
     resolver: zodResolver(schema),
   });
 
-  function onSubmit(data: FormData) {
-    console.log(data);
+  async function onSubmit(data: FormData) {
+    createUserWithEmailAndPassword(auth, data.email, data.password)
+      .then(async (userData) => {
+        await updateProfile(userData.user, {
+          displayName: data.name,
+        });
+
+        console.log("Usuário criado com sucesso!", userData);
+        navigate("/dashboard", { replace: true });
+      })
+      .catch((error) => {
+        console.error("Erro ao criar usuário", error);
+      });
   }
 
   return (
@@ -63,7 +77,7 @@ function Register() {
             type="submit"
             className="bg-zinc-900 w-full rounded-md text-white h-10 font-medium"
           >
-            Acessar
+            Cadastrar
           </button>
         </form>
         <Link to="/login">Já possui uma conta? Faça o login!</Link>
