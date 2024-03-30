@@ -1,15 +1,29 @@
-import { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { AuthContext } from "../contexts/AuthContext";
+import Container from "../components/Container";
+import PanelHeader from "../features/Dashboard/components/PanelHeader";
+import useAuth from "../hooks/useAuth";
 
 export function PublicRoute() {
-  const { signed, loadingAuth } = useContext(AuthContext);
+  const { signed, loadingAuth } = useAuth();
   if (loadingAuth) return <h1>Carregando...</h1>;
-  return signed ? <Navigate to="/dashboard" /> : <Outlet />;
+  return signed ? (
+    <Navigate to="/dashboard" />
+  ) : (
+    <Container>
+      <Outlet />
+    </Container>
+  );
 }
 
 export function PrivateRoute() {
-  const { signed, loadingAuth } = useContext(AuthContext);
+  const { signed, loadingAuth } = useAuth();
   if (loadingAuth) return <h1>Carregando...</h1>;
-  return signed ? <Outlet /> : <Navigate to="/login" />;
+  return signed ? (
+    <Container>
+      <PanelHeader />
+      <Outlet />
+    </Container>
+  ) : (
+    <Navigate to="/login" />
+  );
 }

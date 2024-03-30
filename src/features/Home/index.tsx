@@ -1,8 +1,6 @@
-import Container from "../../components/Container";
-
 function Home() {
   return (
-    <Container>
+    <>
       <section className="bg-white p-4 rounded-lg w-full max-w-3xl mx-auto flex justify-center items-center gap-2">
         <input
           className="w-full border-2 rounded-lg h-9 px-3 outline-none"
@@ -38,7 +36,7 @@ function Home() {
           </div>
         </section>
       </main>
-    </Container>
+    </>
   );
 }
 
