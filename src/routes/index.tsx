@@ -3,19 +3,19 @@ import TemplateImports from "./TemplateImports";
 
 const router = createBrowserRouter([
   {
-    element: <TemplateImports.PrivateRoute />,
+    element: <TemplateImports.Template />,
     children: [
       {
-        element: <TemplateImports.Template />,
+        path: "/",
+        element: <TemplateImports.Home />,
+      },
+      {
+        path: "/car/:id",
+        element: <TemplateImports.CarDetail />,
+      },
+      {
+        element: <TemplateImports.PrivateRoute />,
         children: [
-          {
-            path: "/",
-            element: <TemplateImports.Home />,
-          },
-          {
-            path: "/car/:id",
-            element: <TemplateImports.CarDetail />,
-          },
           {
             path: "/dashboard",
             element: <TemplateImports.Dashboard.Index />,
