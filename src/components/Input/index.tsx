@@ -4,7 +4,7 @@ import { RegisterOptions, UseFormRegister } from "react-hook-form";
 interface InputProps {
   name: string;
   placeholder: string;
-  type: string;
+  type: "text" | "number";
   error?: string;
   rules?: RegisterOptions;
   register: UseFormRegister<any>;
