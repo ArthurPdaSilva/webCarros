@@ -1,15 +1,23 @@
+const {
+  VITE_API_KEY,
+  VITE_APP_ID,
+  VITE_AUTH_DOMAIN,
+  VITE_PROJECT_ID,
+  VITE_STORAGE_BUCKET,
+  VITE_MESSAGING_SENDER_ID,
+} = import.meta.env;
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCJVJJUjWN-d9KdpxMV3WERbAkPbdnQtWE",
-  authDomain: "web-carros-5613f.firebaseapp.com",
-  projectId: "web-carros-5613f",
-  storageBucket: "web-carros-5613f.appspot.com",
-  messagingSenderId: "971794513235",
-  appId: "1:971794513235:web:ef2a3d488352f079d2b5a6",
+  apiKey: VITE_API_KEY,
+  authDomain: VITE_AUTH_DOMAIN,
+  projectId: VITE_PROJECT_ID,
+  storageBucket: VITE_STORAGE_BUCKET,
+  messagingSenderId: VITE_MESSAGING_SENDER_ID,
+  appId: VITE_APP_ID,
 };
 
 const app = initializeApp(firebaseConfig);
