@@ -11,7 +11,7 @@ function Home() {
   const [loadImages, setLoadImages] = useState<string[]>([]);
 
   useEffect(() => {
-    function loadCars() {
+    async function loadCars() {
       const carsRef = collection(db, "cars");
       const queryRef = query(carsRef, orderBy("created", "desc"));
 

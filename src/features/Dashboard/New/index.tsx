@@ -138,7 +138,7 @@ function New() {
             <Input
               name="price"
               register={register}
-              placeholder="Ex: Onix 1.0"
+              placeholder="Ex: 44.550"
               type="number"
               step="any"
               rules={{ valueAsNumber: true }}

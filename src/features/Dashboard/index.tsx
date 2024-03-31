@@ -19,7 +19,7 @@ function Dashboard() {
   const [cars, setCars] = useState<CarProps[]>([]);
 
   useEffect(() => {
-    function loadCars() {
+    async function loadCars() {
       if (!user) return;
       const carsRef = collection(db, "cars");
       const queryRef = query(carsRef, where("uid", "==", user.uid));

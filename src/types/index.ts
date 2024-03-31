@@ -13,4 +13,9 @@ export interface CarProps {
   km: number;
   city: string;
   images: CarImageProps[];
+  description?: string;
+  whatsapp?: string;
+  created?: string;
+  owner?: string;
+  model?: string;
 }
