@@ -4,22 +4,20 @@ import {
   ref,
   uploadBytes,
 } from "firebase/storage";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent } from "react";
 import { FiTrash, FiUpload } from "react-icons/fi";
 import { v4 as uuidV4 } from "uuid";
 import useAuth from "../../../../hooks/useAuth";
 import { storage } from "../../../../services/firebaseConnection";
+import { ImageItemProps } from "../types";
 
-interface ImageItemProps {
-  uid: string;
-  url: string;
-  previewUrl: string;
-  name: string;
+interface FileInputProps {
+  images: ImageItemProps[];
+  setImages: (images: ImageItemProps[]) => void;
 }
 
-function FileInput() {
+function FileInput({ images, setImages }: FileInputProps) {
   const { user } = useAuth();
-  const [images, setImages] = useState<ImageItemProps[]>([]);
 
   async function handleFile(event: ChangeEvent<HTMLInputElement>) {
     if (event.target.files) {

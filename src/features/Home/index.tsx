@@ -1,4 +1,57 @@
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { db } from "../../services/firebaseConnection";
+
+interface CarImageProps {
+  uid: string;
+  url: string;
+  name: string;
+}
+
+interface CarProps {
+  id: string;
+  uid: string;
+  name: string;
+  price: number;
+  year: string;
+  km: number;
+  city: string;
+  images: CarImageProps[];
+}
+
 function Home() {
+  const [cars, setCars] = useState<CarProps[]>([]);
+
+  useEffect(() => {
+    function loadCars() {
+      const carsRef = collection(db, "cars");
+      const queryRef = query(carsRef, orderBy("created", "desc"));
+
+      getDocs(queryRef).then((snapshot) => {
+        const carsList: CarProps[] = [];
+        snapshot.forEach((doc) => {
+          const { name, price, year, km, city, images } = doc.data();
+
+          carsList.push({
+            id: doc.id,
+            uid: doc.id,
+            name,
+            price,
+            year,
+            km,
+            city,
+            images,
+          });
+        });
+
+        setCars(carsList);
+      });
+    }
+
+    loadCars();
+  }, [cars]);
+
   return (
     <>
       <section className="bg-white p-4 rounded-lg w-full max-w-3xl mx-auto flex justify-center items-center gap-2">
@@ -15,26 +68,30 @@ function Home() {
         Carros novos e usados em todo o Brasil
       </h1>
       <main className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <section className="w-full bg-white rounded-lg ">
-          <img
-            className="w-full rounded-lg mb-2 max-h-72 hover:scale-105 transition-all"
-            src="https://image.webmotors.com.br/_fotos/anunciousados/gigante/2024/202403/20240322/bmw-320i-2.0-16v-turbo-flex-gp-automatico-wmimagem15332976026.jpg?s=fill&w=1920&h=1440&q=75"
-            alt="Carro"
-          />
-          <p className="font-bold mt-1 mb-2 px-2">BMW 320i</p>
-          <div className="flex flex-col px-2">
-            <span className="text-zinc-700 mb-6 ">
-              Ano 2016/2016 | 23.000 km
-            </span>
-            <strong className="text-black font-medium text-xl">
-              R$ 190.000
-            </strong>
-          </div>
-          <div className="w-full h-px bg-slate-200 my-2"></div>
-          <div className="px-2 pb-2">
-            <span className="text-zinc-700">Campo Grande - MS</span>
-          </div>
-        </section>
+        {cars.map((car) => (
+          <Link key={car.id} to={`/car/${car.id}`}>
+            <section key={car.id} className="w-full bg-white rounded-lg ">
+              <img
+                className="w-full rounded-lg mb-2 max-h-72 hover:scale-105 transition-all"
+                alt={car.images[0].name}
+                src={car.images[0].url}
+              />
+              <p className="font-bold mt-1 mb-2 px-2">{car.name}</p>
+              <div className="flex flex-col px-2">
+                <span className="text-zinc-700 mb-6 ">
+                  Ano {car.year} | {car.km} km
+                </span>
+                <strong className="text-black font-medium text-xl">
+                  R$ {car.price}
+                </strong>
+              </div>
+              <div className="w-full h-px bg-slate-200 my-2"></div>
+              <div className="px-2 pb-2">
+                <span className="text-zinc-700">{car.city}</span>
+              </div>
+            </section>
+          </Link>
+        ))}
       </main>
     </>
   );

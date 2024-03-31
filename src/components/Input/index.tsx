@@ -8,6 +8,7 @@ interface InputProps {
   error?: string;
   rules?: RegisterOptions;
   register: UseFormRegister<any>;
+  step?: string;
 }
 
 function Input({
@@ -15,6 +16,7 @@ function Input({
   placeholder,
   type,
   error,
+  step,
   rules,
   register,
 }: InputProps) {
@@ -23,6 +25,7 @@ function Input({
       <input
         id={name}
         type={type}
+        step={step}
         placeholder={placeholder}
         className="w-full border-2 rounded-md h-11 px-2"
         {...register(name, rules)}

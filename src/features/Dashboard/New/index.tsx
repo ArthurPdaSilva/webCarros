@@ -1,11 +1,19 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { addDoc, collection } from "firebase/firestore";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Input from "../../../components/Input";
+import useAuth from "../../../hooks/useAuth";
+import { db } from "../../../services/firebaseConnection";
 import FileInput from "./FileInput";
 import PhoneInput from "./PhoneInput";
 import { FormData, schema } from "./schema";
+import { ImageItemProps } from "./types";
 
 function New() {
+  const { user } = useAuth();
+  const [images, setImages] = useState<ImageItemProps[]>([]);
+
   const {
     register,
     handleSubmit,
@@ -17,13 +25,45 @@ function New() {
   });
 
   function onSubmit(data: FormData) {
-    console.log(data);
+    if (images.length < 2) {
+      alert("Envie pelo menos 2 imagens desse carro");
+      return;
+    }
+
+    const carListImages = images.map((image) => ({
+      uid: image.uid,
+      url: image.url,
+      name: image.name,
+    }));
+
+    addDoc(collection(db, "cars"), {
+      name: data.name,
+      model: data.model,
+      year: data.year,
+      km: data.km,
+      price: data.price,
+      city: data.city,
+      whatsapp: data.whatsapp,
+      description: data.description,
+      owner: user?.name,
+      uid: user?.uid,
+      images: carListImages,
+      created: new Date(),
+    })
+      .then(() => {
+        reset();
+        setImages([]);
+        alert("Carro cadastrado com sucesso");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   return (
     <>
       <div className="w-full bg-white p-3 rounded-lg flex flex-col sm:flex-row items-center gap-2">
-        <FileInput />
+        <FileInput images={images} setImages={setImages} />
       </div>
       <div className="w-full bg-white p-3 rounded-lg flex flex-col sm:flex-row items-center gap-2 mt-2">
         <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
@@ -66,6 +106,7 @@ function New() {
                 name="km"
                 register={register}
                 placeholder="Ex: 23.900"
+                step="any"
                 type="number"
                 rules={{ valueAsNumber: true }}
                 error={errors.km?.message}
@@ -99,6 +140,7 @@ function New() {
               register={register}
               placeholder="Ex: Onix 1.0"
               type="number"
+              step="any"
               rules={{ valueAsNumber: true }}
               error={errors.price?.message}
             />
