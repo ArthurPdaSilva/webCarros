@@ -1,24 +1,10 @@
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Container from "../../components/Container";
+import Divider from "../../components/Divider";
 import { db } from "../../services/firebaseConnection";
-
-interface CarImageProps {
-  uid: string;
-  url: string;
-  name: string;
-}
-
-interface CarProps {
-  id: string;
-  uid: string;
-  name: string;
-  price: number;
-  year: string;
-  km: number;
-  city: string;
-  images: CarImageProps[];
-}
+import { CarProps } from "../../types";
 
 function Home() {
   const [cars, setCars] = useState<CarProps[]>([]);
@@ -58,7 +44,7 @@ function Home() {
   }
 
   return (
-    <>
+    <Container>
       <section className="bg-white p-4 rounded-lg w-full max-w-3xl mx-auto flex justify-center items-center gap-2">
         <input
           className="w-full border-2 rounded-lg h-9 px-3 outline-none"
@@ -100,7 +86,7 @@ function Home() {
                   R$ {car.price}
                 </strong>
               </div>
-              <div className="w-full h-px bg-slate-200 my-2"></div>
+              <Divider />
               <div className="px-2 pb-2">
                 <span className="text-zinc-700">{car.city}</span>
               </div>
@@ -108,7 +94,7 @@ function Home() {
           </Link>
         ))}
       </main>
-    </>
+    </Container>
   );
 }
 
