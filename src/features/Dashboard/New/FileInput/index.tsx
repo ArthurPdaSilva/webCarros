@@ -5,6 +5,7 @@ import {
   uploadBytes,
 } from "firebase/storage";
 import { ChangeEvent } from "react";
+import toast from "react-hot-toast";
 import { FiTrash, FiUpload } from "react-icons/fi";
 import { v4 as uuidV4 } from "uuid";
 import useAuth from "../../../../hooks/useAuth";
@@ -36,6 +37,7 @@ function FileInput({ images, setImages }: FileInputProps) {
     const currentUid = user.uid;
     const uidIamge = uuidV4();
     const uploadRef = ref(storage, `images/${currentUid}/${uidIamge}`);
+
     uploadBytes(uploadRef, image).then((snapshot) => {
       getDownloadURL(snapshot.ref).then((url) => {
         const imageItem: ImageItemProps = {
@@ -45,6 +47,7 @@ function FileInput({ images, setImages }: FileInputProps) {
           previewUrl: URL.createObjectURL(image),
         };
         setImages([...images, imageItem]);
+        toast.success("Imagem enviada com sucesso");
       });
     });
   }
@@ -56,8 +59,9 @@ function FileInput({ images, setImages }: FileInputProps) {
       await deleteObject(imageRef);
       const newImages = images.filter((img) => img.uid !== image.uid);
       setImages(newImages);
+      toast.success("Imagem deletada com sucesso");
     } catch (error) {
-      console.log(error);
+      toast.error("Erro ao deletar imagem");
     }
   }
 

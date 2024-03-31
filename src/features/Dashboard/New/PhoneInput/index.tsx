@@ -23,6 +23,7 @@ function PhoneInput({ error, register }: InputProps) {
       <input
         id="whatapp"
         type="text"
+        minLength={14}
         maxLength={15}
         placeholder="Ex: (99) 99999-9999"
         className="w-full border-2 rounded-md h-11 px-2"

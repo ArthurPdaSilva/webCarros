@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { addDoc, collection } from "firebase/firestore";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import Input from "../../../components/Input";
 import useAuth from "../../../hooks/useAuth";
 import { db } from "../../../services/firebaseConnection";
@@ -26,7 +27,7 @@ function New() {
 
   function onSubmit(data: FormData) {
     if (images.length < 2) {
-      alert("Envie pelo menos 2 imagens desse carro");
+      toast.error("Envie pelo menos 2 imagens desse carro");
       return;
     }
 
@@ -53,10 +54,10 @@ function New() {
       .then(() => {
         reset();
         setImages([]);
-        alert("Carro cadastrado com sucesso");
+        toast.success("Carro cadastrado com sucesso");
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
+        toast.error("Falha ao criar um carro");
       });
   }
 

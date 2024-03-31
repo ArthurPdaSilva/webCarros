@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import logoImg from "../../assets/logo.svg";
 import Input from "../../components/Input";
@@ -20,11 +21,11 @@ function Login() {
   function onSubmit(data: FormData) {
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then(() => {
-        console.log("Usuário logado com sucesso!");
+        toast.success("Login realizado com sucesso!");
         navigate("/dashboard", { replace: true });
       })
-      .catch((error) => {
-        console.error("Erro ao fazer login", error);
+      .catch(() => {
+        toast.error("Erro ao realizar login!");
       });
   }
 

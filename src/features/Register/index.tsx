@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import logoImg from "../../assets/logo.svg";
 import Input from "../../components/Input";
@@ -32,11 +33,11 @@ function Register() {
           email: data.email,
         });
 
-        console.log("Usuário criado com sucesso!", userData);
+        toast.success("Usuário criado com sucesso!");
         navigate("/dashboard", { replace: true });
       })
       .catch((error) => {
-        console.error("Erro ao criar usuário", error);
+        toast.error("Erro ao criar usuário", error);
       });
   }
 

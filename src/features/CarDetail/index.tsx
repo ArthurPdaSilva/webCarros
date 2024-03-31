@@ -1,5 +1,6 @@
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { FaWhatsapp } from "react-icons/fa6";
 import { useNavigate, useParams } from "react-router-dom";
 import "swiper/css";
@@ -67,7 +68,7 @@ function CarDetail() {
           }
         })
         .catch((error) => {
-          console.log("Falha ao carregar o elemento", error);
+          toast.error("Falha ao carregar o elemento", error);
         });
     }
 

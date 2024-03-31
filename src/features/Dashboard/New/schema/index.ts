@@ -7,10 +7,7 @@ export const schema = z.object({
   km: z.number().min(0, "A quilometragem deve ser maior ou igual a 0"),
   price: z.number().min(0, "O preço deve ser maior ou igual a 0"),
   city: z.string().min(1, "A cidade deve ter no mínimo 1 caracteres"),
-  whatsapp: z
-    .string()
-    .min(8, "O número de WhatsApp deve ter no mínimo 8 caracteres")
-    .max(15, "O número de WhatsApp deve ter no máximo 15 caracteres"),
+  whatsapp: z.string(),
   description: z.string().min(5, "A descrição deve ter no mínimo 5 caracteres"),
 });
 
